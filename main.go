@@ -55,6 +55,7 @@ func main() {
 		errorExit(fmt.Sprintf("unexpected digest length %d (does not match neither SHA1 nor SHA256)", len(contribList[0])))
 	}
 
+	fmt.Printf("using locality %d\n", *localityFlag)
 	resultDigest := replay(hashAlgo, uint8(*localityFlag), contribList)
 	fmt.Printf("result digest is: %X\n", resultDigest)
 }
@@ -66,7 +67,7 @@ func replay(
 ) Digest {
 
 	v := make([]byte, hasher.Size())
-	v[hasher.Size()-1] = 3
+	v[hasher.Size()-1] = locality
 
 	extend := func(hasher hash.Hash, e []byte) {
 		hasher.Write(v)
