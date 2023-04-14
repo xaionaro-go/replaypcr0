@@ -10,6 +10,7 @@ import (
 	"hash"
 	"log"
 	"os"
+	"strings"
 )
 
 func usage() {
@@ -96,7 +97,7 @@ func parseListFile(listFilePath string) ([]Digest, error) {
 	scanner := bufio.NewScanner(listFile)
 	for scanner.Scan() {
 		str := scanner.Text()
-		b, err := hex.DecodeString(str)
+		b, err := hex.DecodeString(strings.Trim(str, " "))
 		if err != nil {
 			return nil, fmt.Errorf("unable to un-HEX value '%s': %w", str, err)
 		}
